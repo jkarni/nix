@@ -68,6 +68,8 @@ struct Pos
     bool operator!=(const Pos & rhs) const = default;
     bool operator<(const Pos & rhs) const;
 
+    std::string getSnippetUpTo(const Pos & end) const;
+
     struct LinesIterator {
         using difference_type = size_t;
         using value_type = std::string_view;
