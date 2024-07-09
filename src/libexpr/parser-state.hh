@@ -61,7 +61,7 @@ struct LexerState
      * so that it can be updated with things like a name from a binding during
      * parsing.
      */
-    std::map<PosIdx, DocComment> positionToDocComment;
+    std::map<PosIdx, DocComment> & positionToDocComment;
 
     PosTable & positions;
     PosTable::Origin origin;

@@ -33,6 +33,8 @@
 
 namespace nix {
 
+typedef std::map<PosIdx, DocComment> DocCommentMap;
+
 Expr * parseExprFromBuf(
     char * text,
     size_t length,
@@ -41,6 +43,7 @@ Expr * parseExprFromBuf(
     SymbolTable & symbols,
     const EvalSettings & settings,
     PosTable & positions,
+    DocCommentMap & docComments,
     const ref<SourceAccessor> rootFS,
     const Expr::AstSymbols & astSymbols);
 
@@ -336,10 +339,12 @@ binds
       $$ = $1;
 
       auto pos = state->at(@2);
+      auto exprPos = state->at(@4);
       {
         auto it = state->lexerState.positionToDocComment.find(pos);
         if (it != state->lexerState.positionToDocComment.end()) {
           $4->setDocComment(it->second);
+          state->lexerState.positionToDocComment.emplace(exprPos, it->second);
         }
       }
 
@@ -464,11 +469,13 @@ Expr * parseExprFromBuf(
     SymbolTable & symbols,
     const EvalSettings & settings,
     PosTable & positions,
+    DocCommentMap & docComments,
     const ref<SourceAccessor> rootFS,
     const Expr::AstSymbols & astSymbols)
 {
     yyscan_t scanner;
     LexerState lexerState {
+        .positionToDocComment = docComments,
         .positions = positions,
         .origin = positions.addOrigin(origin, length),
     };
