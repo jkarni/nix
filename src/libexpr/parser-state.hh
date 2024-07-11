@@ -20,8 +20,8 @@ struct StringToken
 
 struct ParserLocation
 {
-    int first_line, first_column;
-    int last_line, last_column;
+    int first_column;
+    int last_column;
 
     // backup to recover from yyless(0)
     int stashed_first_column, stashed_last_column;
@@ -37,7 +37,7 @@ struct ParserLocation
     }
 
     /** Latest doc comment position, or 0. */
-    int doc_comment_first_line, doc_comment_first_column, doc_comment_last_column;
+    int doc_comment_first_column, doc_comment_last_column;
 };
 
 struct LexerState
