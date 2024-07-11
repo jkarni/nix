@@ -271,7 +271,7 @@ connected:
             Activity act(*logger, lvlTalkative, actUnknown, fmt("waiting for the upload lock to '%s'", storeUri));
 
             auto old = signal(SIGALRM, handleAlarm);
-            alarm(15 * 60);
+            alarm(2 * 60);
             if (!lockFile(uploadLock.get(), ltWrite, true))
                 printError("somebody is hogging the upload lock for '%s', continuing...");
             alarm(0);
